@@ -1,0 +1,32 @@
+render() {
+    
+    const {latitute, longitude} = this.state
+    
+    if(this.state.location)
+    {
+        let text = JSON.stringify(this.state.location)
+        latitute = text.coords.latitute
+        longitude = text.coords.longitude
+
+        return (
+            <View style={styles.container}>
+                <MapView style={styles.mapStyle}
+                    showsUserLocation 
+                    initialRegion={{
+                        latitute,
+                        longitude,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421
+                    }}
+                />
+            </View>
+        )
+    }
+    else
+    {
+    return (<View style={{flex: 1, justifyContent:'center', alignItems: 'center'}}><Text>Za prikaz stanica potrebna je Vaša dozvola {this.state.location}</Text></View>)
+    }
+  }
+
+43.855973, 18.412870
+
