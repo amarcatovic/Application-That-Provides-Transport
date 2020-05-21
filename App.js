@@ -21,6 +21,10 @@ import KorisnikStanice from './Screens/Korisnik/stanice'
 import KorisnikProdajnaMjesta from './Screens/Korisnik/prodajnaMjesta'
 import KorisnikPayByApp from './Screens/Korisnik/payByApp'
 import KorisnikProfil from './Screens/Korisnik/profil'
+import KorisnikPlaceno from './Screens/Korisnik/placeno'
+import KorisnikNadopunjeno from './Screens/Korisnik/nadopunjeno'
+import KorisnikTaxi from './Screens/Korisnik/taxi'
+import TaxiPlati from './Screens/Korisnik/payForTaxi'
 
 const Tabs = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -158,6 +162,18 @@ export default () => {
             backgroundColor: '#3366CC',
             }, headerTintColor: 'white'}}/>
           <Stack.Screen name="KorisnikProfil" component={KorisnikProfil} options={{title: 'Profil', headerStyle: {
+            backgroundColor: '#3366CC',
+          }, headerTintColor: 'white'}}/>
+          <Stack.Screen name="KorisnikPlaceno" component={KorisnikPlaceno} options={{title: 'Plaćene vožnje', headerStyle: {
+            backgroundColor: '#3366CC',
+          }, headerTintColor: 'white'}}/>
+          <Stack.Screen name="KorisnikNadopunjeno" component={KorisnikNadopunjeno} options={{title: 'Nadopune', headerStyle: {
+            backgroundColor: '#3366CC',
+          }, headerTintColor: 'white'}}/>
+          <Stack.Screen name="KorisnikTaxi" component={KorisnikTaxi} options={{title: 'Naruči Taxi', headerStyle: {
+            backgroundColor: '#3366CC',
+          }, headerTintColor: 'white'}}/>
+          <Stack.Screen name="TaxiPlati" component={TaxiPlati} options={{title: 'Plati Taxi', headerStyle: {
             backgroundColor: '#3366CC',
           }, headerTintColor: 'white'}}/>
        </Stack.Navigator>

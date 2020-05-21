@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
     marginTop: 50,
     fontWeight: 'bold',
     fontSize: 50
-
   },
   text:{
     color: 'white',

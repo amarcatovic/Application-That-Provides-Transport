@@ -19,6 +19,9 @@ export default class main extends Component {
       taxiWindow: false,
       profilWindow: false,
       mainWindow: true,
+      taxiZahtjevi: [],
+      loadingTaxi: true,
+      aktivniZahtjeviCount: 0,
     }
   }
 
@@ -26,6 +29,7 @@ export default class main extends Component {
     this.ucitajGradove()
     this.ucitajTipove()
     this.ucitajAktivneLinije()
+    this.ucitajTaxiZahtjeve()
     setInterval(() => {this.setState({reloadLinije: true})}, 5000)
   }
 
@@ -56,11 +60,34 @@ export default class main extends Component {
         this.setState({reloadLinije: false})
       }) 
   }
+
+  ucitajTaxiZahtjeve = async () => {
+    await fetch(`http://${getIP()}/publictransportcloud/api/TaxiZahtjev/read.php?id=${this.state.data.id}`)
+    .then(response => response.json())
+    .then(data => {  
+        if(data.message)
+        {
+          this.setState({taxiZahtjevi: []})
+        }
+        else
+        {
+          let brojac = 0
+          data.data.map(zahtjev => {
+            if(zahtjev.status === "Prihvaćen")
+              brojac++
+          })
+
+          this.setState({taxiZahtjevi: data.data, aktivniZahtjeviCount: brojac})
+        }
+          this.setState({loadingTaxi: false})
+      }) 
+  }
   
   render() {
     if(this.state.reloadLinije)
     {
       this.ucitajAktivneLinije()
+      this.ucitajTaxiZahtjeve()
     }
     if(this.state.loadingGrad || this.state.loadingTip || this.state.loadingLinije){
       this.ucitajAktivneLinije()
@@ -76,8 +103,8 @@ export default class main extends Component {
         <View style={styles.container} >
           <View style={styles.optionIcons}>
             <TouchableOpacity 
-              onPress={() => alert("TODO: Taxi")}>
-              <Image style={styles.tinyLogo} source={require('../../imgs/Taxi.png')} />
+              onPress={() => this.props.navigation.navigate('KorisnikTaxi', {data: this.state.data, taxi: this.state.taxiZahtjevi})}>
+              {this.state.aktivniZahtjeviCount > 0 ? <Image style={styles.tinyLogo} source={require('../../imgs/Taxi-Zahtjev.png')} /> : <Image style={styles.tinyLogo} source={require('../../imgs/Taxi.png')} />}
             </TouchableOpacity>
             <TouchableOpacity 
               onPress={() => this.props.navigation.navigate('PayByAppKorisnik', {data: this.state.data})}>
