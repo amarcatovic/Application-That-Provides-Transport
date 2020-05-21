@@ -20,6 +20,7 @@ import KorisnikMain from './Screens/Korisnik/main'
 import KorisnikStanice from './Screens/Korisnik/stanice'
 import KorisnikProdajnaMjesta from './Screens/Korisnik/prodajnaMjesta'
 import KorisnikPayByApp from './Screens/Korisnik/payByApp'
+import KorisnikProfil from './Screens/Korisnik/profil'
 
 const Tabs = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -153,7 +154,12 @@ export default () => {
           <Stack.Screen name="KorisnikMain" component={KorisnikTabsScreen} options={{headerLeft: null, title: 'Početna', headerStyle: {
             backgroundColor: '#3366CC',
           }, headerTintColor: 'white'}}/>
-          <Stack.Screen name="PayByAppKorisnik" component={KorisnikPayByApp} />
+          <Stack.Screen name="PayByAppKorisnik" component={KorisnikPayByApp} options={{title: 'Pay By App', headerStyle: {
+            backgroundColor: '#3366CC',
+            }, headerTintColor: 'white'}}/>
+          <Stack.Screen name="KorisnikProfil" component={KorisnikProfil} options={{title: 'Profil', headerStyle: {
+            backgroundColor: '#3366CC',
+          }, headerTintColor: 'white'}}/>
        </Stack.Navigator>
       </NavigationContainer>
   )

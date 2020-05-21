@@ -84,7 +84,7 @@ export default class main extends Component {
               <Image style={styles.tinyLogo} source={require('../../imgs/QR.png')} />
             </TouchableOpacity>
             <TouchableOpacity 
-              onPress={() => alert("TODO: Profil")}>
+              onPress={() => this.props.navigation.navigate('KorisnikProfil', {data: this.state.data})}>
               <Image style={styles.tinyLogo} source={require('../../imgs/Profil.png')} />
             </TouchableOpacity>
           </View>
