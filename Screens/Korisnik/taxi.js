@@ -128,6 +128,17 @@ export default class taxi extends Component {
       {
           this.ucitajTaxiZahtjeve()
       }
+
+      if(this.state.loading)
+      {
+          return (
+            <View style={styles.container}>
+                <Text style={{textAlign: 'center', fontSize: 20, color:'#3366CC', fontWeight: 'bold'}}>Učitavanje...</Text>
+            </View>
+          )
+      }
+      else
+      {
       return(
           
         <View style={styles.container}>
@@ -224,6 +235,7 @@ export default class taxi extends Component {
           />
         </View>
       )
+    }
   }
 }
 
