@@ -154,7 +154,9 @@ export default () => {
           <Stack.Screen name="VozacLinijaManager" component={VozacLinijaManager} options={{title: 'Upravljanje Linijom', headerStyle: {
             backgroundColor: '#3366CC',
           }, headerTintColor: 'white'}}/>
-          <Stack.Screen name="TaxiVozacMain" component={TaxiVozacMain} />
+          <Stack.Screen name="TaxiVozacMain" component={TaxiVozacMain} options={{headerLeft: null, title: 'Taxi', headerStyle: {
+            backgroundColor: '#3366CC',
+          }, headerTintColor: 'white'}}/>
           <Stack.Screen name="KorisnikMain" component={KorisnikTabsScreen} options={{headerLeft: null, title: 'Početna', headerStyle: {
             backgroundColor: '#3366CC',
           }, headerTintColor: 'white'}}/>

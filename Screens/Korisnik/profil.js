@@ -144,6 +144,7 @@ export default class Profile extends Component {
                   logoSize={20}
                   logoBorderRadius={10}
                   logoBackgroundColor={'transparent'}
+                  strokeLinecap={'square'}
               />
             </View>
           )

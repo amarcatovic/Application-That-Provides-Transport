@@ -99,7 +99,7 @@ export default class taxi extends Component {
     headers: {
         'Content-Type': 'application/json',
     },
-    body: JSON.stringify({id: this.state.data.id, lokacija: this.state.lokacija, opis: this.state.opis}),
+    body: JSON.stringify({id: this.state.data.id, lokacija: this.state.lokacija, opis: this.state.opis, grad_id: this.state.data.grad_id}),
     })
     .then(response => response.json())
     .then(dataJSON => {
