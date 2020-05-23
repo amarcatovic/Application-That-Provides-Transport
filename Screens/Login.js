@@ -40,6 +40,10 @@ export default class Login extends Component {
       {
         this.props.navigation.navigate('KorisnikMain', {screen: "KorisnikHome", params: {data: this.state.data}})
       }
+      else if (this.state.data.uloga == "Revizor")
+      {
+        this.props.navigation.navigate('Revizor', {data: this.state.data})
+      }
     })
     .catch((error) => {
         alert('Geška prilikom prijavljivanja, molimo Vas da pokušate ponovo')

@@ -135,7 +135,7 @@ export default class Profile extends Component {
                 </TouchableOpacity>
 
               <QRCode
-                  value={this.state.data.brojKartice}
+                  value={this.state.data.id}
                   color={'#3366CC'}
                   backgroundColor={'white'}
                   size={150}

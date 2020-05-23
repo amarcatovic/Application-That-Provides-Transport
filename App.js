@@ -26,6 +26,8 @@ import KorisnikNadopunjeno from './Screens/Korisnik/nadopunjeno'
 import KorisnikTaxi from './Screens/Korisnik/taxi'
 import TaxiPlati from './Screens/Korisnik/payForTaxi'
 
+import Revizor from './Screens/Revizor/main'
+
 const Tabs = createBottomTabNavigator()
 const Stack = createStackNavigator()
 
@@ -176,6 +178,9 @@ export default () => {
             backgroundColor: '#3366CC',
           }, headerTintColor: 'white'}}/>
           <Stack.Screen name="TaxiPlati" component={TaxiPlati} options={{title: 'Plati Taxi', headerStyle: {
+            backgroundColor: '#3366CC',
+          }, headerTintColor: 'white'}}/>
+          <Stack.Screen name="Revizor" component={Revizor} options={{headerLeft: null, title: 'Revizor', headerStyle: {
             backgroundColor: '#3366CC',
           }, headerTintColor: 'white'}}/>
        </Stack.Navigator>
