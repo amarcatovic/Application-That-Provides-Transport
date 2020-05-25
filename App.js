@@ -25,6 +25,7 @@ import KorisnikPlaceno from './Screens/Korisnik/placeno'
 import KorisnikNadopunjeno from './Screens/Korisnik/nadopunjeno'
 import KorisnikTaxi from './Screens/Korisnik/taxi'
 import TaxiPlati from './Screens/Korisnik/payForTaxi'
+import StaniceRelacije from './Screens/Korisnik/StaniceRelacije'
 
 import Revizor from './Screens/Revizor/main'
 
@@ -181,6 +182,9 @@ export default () => {
             backgroundColor: '#3366CC',
           }, headerTintColor: 'white'}}/>
           <Stack.Screen name="Revizor" component={Revizor} options={{headerLeft: null, title: 'Revizor', headerStyle: {
+            backgroundColor: '#3366CC',
+          }, headerTintColor: 'white'}}/>
+          <Stack.Screen name="StaniceRelacije" component={StaniceRelacije} options={{headerLeft: null, title: 'Stanice', headerStyle: {
             backgroundColor: '#3366CC',
           }, headerTintColor: 'white'}}/>
        </Stack.Navigator>

@@ -138,7 +138,7 @@ export default class main extends Component {
             renderItem={({item}) => (
                 <TouchableOpacity
                     style={styles.relacija}
-                    onPress={() => alert("TODO")}>
+                    onPress={() => this.props.navigation.navigate('StaniceRelacije', {relacija_id: item.relacija_id})}>
                       {item.tip == "Autobus" ? <Image style={styles.tinyLogo} source={require('../../imgs/bus.png')} /> : undefined }
                       {item.tip == "Trolejbus" ? <Image style={styles.tinyLogo} source={require('../../imgs/bus.png')} /> : undefined }
                       {item.tip == "Tramvaj" ? <Image style={styles.tinyLogo} source={require('../../imgs/Tramvaj.png')} /> : undefined }

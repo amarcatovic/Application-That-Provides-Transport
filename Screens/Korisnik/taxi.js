@@ -219,8 +219,7 @@ export default class taxi extends Component {
             data={this.state.taxi}
             renderItem={({item}) => (
                 <TouchableOpacity
-                    style={styles.relacija}
-                    onPress={() => alert("TODO")}>
+                    style={styles.relacija}>
                     <Image style={styles.tinyLogo} source={require('../../imgs/Taxi.png')} />
                     <View style={styles.textoviRelacija}>
                         <Text style={[styles.textRelacija, {fontWeight: 'bold', fontSize: 20}]}>{item.lokacija}</Text>

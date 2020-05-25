@@ -7,15 +7,14 @@ import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions'
 import * as Location from 'expo-location';
 
-export default function Stanice() {
+export default function Stanice({route, navigation}) {
     const [location, setLocation] = useState(null)
     const [errorMsg, setErrorMsg] = useState(null)
     const [latitude, setLat] = useState(null)
     const [longitude, setLng] = useState(null)
     const [time, setTime] = useState(true)
     const [stanice, setStanice] = useState([])
-    const [gradovi, setGradovi] = useState([])
-    const [gradID, setGradID] = useState([0])
+    const [relacija_id, setRelacija] = useState(route.params.relacija_id)
 
   
     useEffect(() => {
@@ -33,23 +32,14 @@ export default function Stanice() {
           if(location === null){
               let location = await Location.getCurrentPositionAsync({maximumAge: 100})
               ucitajStanice()
-              ucitajGradove()
               setLocation(location)
           }
         })();
       }
     })
 
-    const ucitajGradove = async () => {
-        await fetch(`http://${getIP()}/publictransportcloud/api/Grad/read.php`)
-        .then(response => response.json())
-        .then(data => {  
-            setGradovi(data.data)
-          }) 
-      }
-
-    const ucitajStanice = async (id = 1) => {
-        await fetch(`http://${getIP()}/publictransportcloud/api/Stanica/read.php?id=${id}`)
+    const ucitajStanice = async () => {
+        await fetch(`http://${getIP()}/publictransportcloud/api/Linija/stanice-relacija.php?id=${relacija_id}`)
         .then(response => response.json())
         .then(data => { 
             if(data.message)
@@ -59,31 +49,6 @@ export default function Stanice() {
             else
             {
                 setStanice(data.data)
-            }
-          }) 
-      }
-
-      const ucitajRelacije = async (id) => {
-        await fetch(`http://${getIP()}/publictransportcloud/api/Stanica/relacije.php?id=${id}`)
-        .then(response => response.json())
-        .then(data => { 
-            if(data.message)
-            {
-            
-            }
-            else
-            {
-                const relacije = data.data
-                let relacijeText = ''
-                relacije.map(relacija => relacijeText += relacija.polaziste + " - " + relacija.odrediste + '\n')
-                Alert.alert(
-                  "Relacije",
-                  relacijeText,
-                  [
-                      { text: "Ok"}
-                  ],
-                  { cancelable: false }
-              )
             }
           }) 
       }
@@ -99,18 +64,6 @@ export default function Stanice() {
   
     return (
         <View style={styles.container}>
-        <Picker
-          style={{ height: 50, width: '100%' }}
-          mode="dropdown"
-          selectedValue={gradID}
-          onValueChange={(itemValue, itemIndex) => {
-            setGradID(itemValue)
-            setLat(gradovi[itemIndex].lat)
-            setLng(gradovi[itemIndex].lng)
-            ucitajStanice(itemValue)
-            }}>
-          {gradovi.map(grad => <Picker.Item label={grad.naziv} value={grad.id}/>)}
-        </Picker>
         <MapView style={styles.mapStyle}
             showsUserLocation 
             initialRegion={{
@@ -119,8 +72,7 @@ export default function Stanice() {
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421
             }}>
-            {stanice.map(stanica => <Marker coordinate={{latitude: parseFloat(stanica.lat), longitude: parseFloat(stanica.lng)}} title={stanica.naziv}
-              onPress={() => ucitajRelacije(stanica.id)}>
+            {stanice.map(stanica => <Marker coordinate={{latitude: parseFloat(stanica.lat), longitude: parseFloat(stanica.lng)}} title={stanica.naziv}>
                 {stanica.tip == "Autobus" ? <Image source={require('../../imgs/bus.png')} style={{ width: 25, height: 25 }}/> : undefined}
                 {stanica.tip == "Tramvaj" ? <Image source={require('../../imgs/Tramvaj.png')} style={{ width: 25, height: 25 }}/> : undefined}
                 {stanica.tip == "Voz" ? <Image source={require('../../imgs/Voz.png')} style={{ width: 25, height: 25 }}/> : undefined}
@@ -142,7 +94,7 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height - 150,
+    height: Dimensions.get('window').height,
   },
   paragraph: {
     margin: 24,
