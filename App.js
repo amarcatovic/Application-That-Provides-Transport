@@ -32,6 +32,8 @@ import Revizor from './Screens/Revizor/main'
 const Tabs = createBottomTabNavigator()
 const Stack = createStackNavigator()
 
+console.disableYellowBox = true
+
 const AppIntro = createStackNavigator()
 const AppIntroScreen = () => (
   <AppIntro.Navigator>
