@@ -23,7 +23,7 @@ export default class taxi extends Component {
   componentDidMount(){
     setInterval(() => {
         this.setState({loadingTaxi: true})
-    }, 5000)
+    }, 2000)
     this.ucitajTaxiZahtjeve()
     this.setState({loading: false})
   }

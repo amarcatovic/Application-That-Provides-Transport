@@ -30,7 +30,7 @@ export default class main extends Component {
     this.ucitajTipove()
     this.ucitajAktivneLinije()
     this.ucitajTaxiZahtjeve()
-    setInterval(() => {this.setState({reloadLinije: true})}, 5000)
+    setInterval(() => {this.setState({reloadLinije: true})}, 2000)
   }
 
   ucitajGradove = async () => {

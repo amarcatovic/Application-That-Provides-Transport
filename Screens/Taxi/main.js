@@ -30,7 +30,7 @@ export default class main extends Component {
   componentDidMount(){
     setInterval(() => {
       this.setState({reload: true})
-    }, 5000)
+    }, 2000)
 
     this.ucitajGradove()
     this.ucitajAktivneZahtjeve()
