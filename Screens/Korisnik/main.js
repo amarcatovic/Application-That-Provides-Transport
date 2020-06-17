@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Alert, Text, Button, TextInput, View, StyleSheet, TouchableOpacity, Picker, FlatList, Image } from 'react-native'
 import getIP from '../../config'
 
+import { Dialog } from 'react-native-simple-dialogs'
+
 export default class main extends Component {
   constructor(props) {
     super(props)
@@ -22,6 +24,7 @@ export default class main extends Component {
       taxiZahtjevi: [],
       loadingTaxi: true,
       aktivniZahtjeviCount: 0,
+      dialogVisible: true,
     }
   }
 
@@ -101,6 +104,20 @@ export default class main extends Component {
     {
       return (
         <View style={styles.container} >
+          <Dialog 
+              visible={this.state.dialogVisible} 
+              title="COVID 19 Upozorenje"
+              onTouchOutside={() => this.setState({dialogVisible: false})} >
+              <View>
+                <Image style={styles.tinyLogo} source={require('../../imgs/mask.png')} />
+                <Text>Dragi korisnici,</Text>
+                <Text>Za Vašu i našu sigurnost, molimo Vas da za vrijeme korištenja javnog prevoza koristite zaštitne maske</Text>
+                <Text></Text>
+                <Text>Hvala Vam na razumijevanju,</Text>
+                <Text>Vaš ATPT Tim</Text>
+              </View>
+          </Dialog>
+
           <View style={styles.optionIcons}>
             <TouchableOpacity 
               onPress={() => this.props.navigation.navigate('KorisnikTaxi', {data: this.state.data, taxi: this.state.taxiZahtjevi})}>
@@ -162,6 +179,11 @@ export default class main extends Component {
 }
 
 const styles = StyleSheet.create({
+  covidContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ecf0f1',
+  },
   container: {
     flex: 1,
     alignItems: 'center',
