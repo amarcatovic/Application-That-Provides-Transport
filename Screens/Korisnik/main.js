@@ -106,15 +106,17 @@ export default class main extends Component {
         <View style={styles.container} >
           <Dialog 
               visible={this.state.dialogVisible} 
-              title="COVID 19 Upozorenje"
+              title="COVID-19 Upozorenje"
               onTouchOutside={() => this.setState({dialogVisible: false})} >
-              <View>
+              <View style={styles.covidContainer}>
                 <Image style={styles.tinyLogo} source={require('../../imgs/mask.png')} />
-                <Text>Dragi korisnici,</Text>
-                <Text>Za Vašu i našu sigurnost, molimo Vas da za vrijeme korištenja javnog prevoza koristite zaštitne maske</Text>
-                <Text></Text>
-                <Text>Hvala Vam na razumijevanju,</Text>
-                <Text>Vaš ATPT Tim</Text>
+                <View style={{marginTop: 20}}>
+                  <Text>Dragi korisnici,</Text>
+                  <Text>Za Vašu i našu sigurnost, molimo Vas da za vrijeme korištenja javnog prevoza koristite zaštitne maske i da održavate propisanu distancu</Text>
+                  <Text></Text>
+                  <Text>Hvala Vam na razumijevanju,</Text>
+                  <Text>Vaš ATPT Tim</Text>
+                </View>
               </View>
           </Dialog>
 
@@ -182,7 +184,6 @@ const styles = StyleSheet.create({
   covidContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
   },
   container: {
     flex: 1,
