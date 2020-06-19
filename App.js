@@ -1,6 +1,6 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import { NavigationContainer} from '@react-navigation/native'
+import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 import { Ionicons } from '@expo/vector-icons'
@@ -37,7 +37,7 @@ console.disableYellowBox = true
 const AppIntro = createStackNavigator()
 const AppIntroScreen = () => (
   <AppIntro.Navigator>
-    <AppIntro.Screen name="Welcome" component={Welcome} options={{title: 'Molimo Vas da sačekate'}}/>
+    <AppIntro.Screen name="Welcome" component={Welcome} options={{ title: 'Molimo Vas da sačekate' }} />
     <AppIntro.Screen name="Login" component={Login} />
   </AppIntro.Navigator>
 )
@@ -45,26 +45,26 @@ const AppIntroScreen = () => (
 const VozacTabs = createBottomTabNavigator()
 const VozacTabsScreen = () => (
   <VozacTabs.Navigator
-  screenOptions={({ route }) => ({
-    tabBarIcon: ({ focused, color, size }) => {
-      let iconName;
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
 
-      if (route.name === 'VozacMain') {
-        iconName = focused ? 'ios-bus' : 'ios-bus';
-      } else if (route.name === 'VozacMain2') {
-        iconName = focused ? 'ios-help-circle' : 'ios-help-circle-outline';
-      }
+        if (route.name === 'VozacMain') {
+          iconName = focused ? 'ios-bus' : 'ios-bus';
+        } else if (route.name === 'VozacMain2') {
+          iconName = focused ? 'ios-help-circle' : 'ios-help-circle-outline';
+        }
 
-      return <Ionicons name={iconName} size={size} color={color} />;
-    },
-  })}
-  tabBarOptions={{
-    activeTintColor: '#3366CC',
-    inactiveTintColor: 'gray',
-  }}
+        return <Ionicons name={iconName} size={size} color={color} />;
+      },
+    })}
+    tabBarOptions={{
+      activeTintColor: '#3366CC',
+      inactiveTintColor: 'gray',
+    }}
   >
-    <VozacTabs.Screen name="VozacMain" component={VozacMain} options={{title: "Vozač"}}/>
-    <VozacTabs.Screen name="VozacMain2" component={VozacHelp} options={{title: "Pomoć"}}/>
+    <VozacTabs.Screen name="VozacMain" component={VozacMain} options={{ title: "Vozač" }} />
+    <VozacTabs.Screen name="VozacMain2" component={VozacHelp} options={{ title: "Pomoć" }} />
   </VozacTabs.Navigator>
 )
 
@@ -100,27 +100,33 @@ const KorisnikTabsScreen = () => (
       inactiveTintColor: 'gray',
     }}
   >
-    <KorisnikTabs.Screen name="KorisnikHome" component={KorisnikMain} 
-            options={{
-            headerLeft: null, title: 'Aktivne Linije', headerStyle: {
-            backgroundColor: '#3366CC',}, 
-            navigationOptions: {
-            headerTintColor: 'white'}
-            }}/>
-    <KorisnikTabs.Screen name="KorisnikStanice" component={KorisnikStanice} options={{headerLeft: null, title: 'Stanice', headerStyle: {
-            backgroundColor: '#3366CC',
-          }, headerTintColor: 'white'}}/>
-    <KorisnikTabs.Screen name="KorisnikProdajnaMjesta" component={KorisnikProdajnaMjesta} options={{headerLeft: null, title: 'Prodajna Mjesta', headerStyle: {
-      backgroundColor: '#3366CC',
-    }, headerTintColor: 'white'}}/>
+    <KorisnikTabs.Screen name="KorisnikHome" component={KorisnikMain}
+      options={{
+        headerLeft: null, title: 'Aktivne Linije', headerStyle: {
+          backgroundColor: '#3366CC',
+        },
+        navigationOptions: {
+          headerTintColor: 'white'
+        }
+      }} />
+    <KorisnikTabs.Screen name="KorisnikStanice" component={KorisnikStanice} options={{
+      headerLeft: null, title: 'Stanice', headerStyle: {
+        backgroundColor: '#3366CC',
+      }, headerTintColor: 'white'
+    }} />
+    <KorisnikTabs.Screen name="KorisnikProdajnaMjesta" component={KorisnikProdajnaMjesta} options={{
+      headerLeft: null, title: 'Prodajna Mjesta', headerStyle: {
+        backgroundColor: '#3366CC',
+      }, headerTintColor: 'white'
+    }} />
   </KorisnikTabs.Navigator>
 )
 
 
 export default () => {
 
-  const [isLoading, setIsLoading, uloga ] = React.useState(true)
-  const [userToken, setUserToken] =  React.useState(null)
+  const [isLoading, setIsLoading, uloga] = React.useState(true)
+  const [userToken, setUserToken] = React.useState(null)
 
   const authContext = React.useMemo(() => {
     return {
@@ -142,54 +148,81 @@ export default () => {
     }, 2000)
   })
 
-  if(isLoading){
+  if (isLoading) {
     return <LoadingScreen />
   }
 
-  return(
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="AppIntroScreen" component={Login} options={{title: 'Dobrodošli', headerTitleStyle: { 
-          textAlign:"center"}, headerStyle: {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="AppIntroScreen" component={Login} options={{
+          title: 'Dobrodošli', headerTitleStyle: {
+            textAlign: "center"
+          }, headerStyle: {
             backgroundColor: '#3366CC',
-          },headerTintColor: 'white'}}/>
-          <Stack.Screen name="VozacMainTabs" component={VozacTabsScreen} options={{headerLeft: null, title: 'Glavni Izbornik', headerStyle: {
+          }, headerTintColor: 'white'
+        }} />
+        <Stack.Screen name="VozacMainTabs" component={VozacTabsScreen} options={{
+          headerLeft: null, title: 'Glavni Izbornik', headerStyle: {
             backgroundColor: '#3366CC',
-          }, headerTintColor: 'white'}}/>
-          <Stack.Screen name="VozacLinijaManager" component={VozacLinijaManager} options={{title: 'Upravljanje Linijom', headerStyle: {
+          }, headerTintColor: 'white'
+        }} />
+        <Stack.Screen name="VozacLinijaManager" component={VozacLinijaManager} options={{
+          title: 'Upravljanje Linijom', headerStyle: {
             backgroundColor: '#3366CC',
-          }, headerTintColor: 'white'}}/>
-          <Stack.Screen name="TaxiVozacMain" component={TaxiVozacMain} options={{headerLeft: null, title: 'Taxi', headerStyle: {
+          }, headerTintColor: 'white'
+        }} />
+        <Stack.Screen name="TaxiVozacMain" component={TaxiVozacMain} options={{
+          headerLeft: null, title: 'Taxi', headerStyle: {
             backgroundColor: '#3366CC',
-          }, headerTintColor: 'white'}}/>
-          <Stack.Screen name="KorisnikMain" component={KorisnikTabsScreen} options={{headerLeft: null, title: 'Početna', headerStyle: {
+          }, headerTintColor: 'white'
+        }} />
+        <Stack.Screen name="KorisnikMain" component={KorisnikTabsScreen} options={{
+          headerLeft: null, title: '#blacklivesmatter', headerStyle: {
+            backgroundColor: 'black',
+          }, headerTintColor: 'white'
+        }} />
+        <Stack.Screen name="PayByAppKorisnik" component={KorisnikPayByApp} options={{
+          title: 'Pay By App', headerStyle: {
             backgroundColor: '#3366CC',
-          }, headerTintColor: 'white'}}/>
-          <Stack.Screen name="PayByAppKorisnik" component={KorisnikPayByApp} options={{title: 'Pay By App', headerStyle: {
+          }, headerTintColor: 'white'
+        }} />
+        <Stack.Screen name="KorisnikProfil" component={KorisnikProfil} options={{
+          title: 'Profil', headerStyle: {
             backgroundColor: '#3366CC',
-            }, headerTintColor: 'white'}}/>
-          <Stack.Screen name="KorisnikProfil" component={KorisnikProfil} options={{title: 'Profil', headerStyle: {
+          }, headerTintColor: 'white'
+        }} />
+        <Stack.Screen name="KorisnikPlaceno" component={KorisnikPlaceno} options={{
+          title: 'Plaćene vožnje', headerStyle: {
             backgroundColor: '#3366CC',
-          }, headerTintColor: 'white'}}/>
-          <Stack.Screen name="KorisnikPlaceno" component={KorisnikPlaceno} options={{title: 'Plaćene vožnje', headerStyle: {
+          }, headerTintColor: 'white'
+        }} />
+        <Stack.Screen name="KorisnikNadopunjeno" component={KorisnikNadopunjeno} options={{
+          title: 'Nadopune', headerStyle: {
             backgroundColor: '#3366CC',
-          }, headerTintColor: 'white'}}/>
-          <Stack.Screen name="KorisnikNadopunjeno" component={KorisnikNadopunjeno} options={{title: 'Nadopune', headerStyle: {
+          }, headerTintColor: 'white'
+        }} />
+        <Stack.Screen name="KorisnikTaxi" component={KorisnikTaxi} options={{
+          title: 'Naruči Taxi', headerStyle: {
             backgroundColor: '#3366CC',
-          }, headerTintColor: 'white'}}/>
-          <Stack.Screen name="KorisnikTaxi" component={KorisnikTaxi} options={{title: 'Naruči Taxi', headerStyle: {
+          }, headerTintColor: 'white'
+        }} />
+        <Stack.Screen name="TaxiPlati" component={TaxiPlati} options={{
+          title: 'Plati Taxi', headerStyle: {
             backgroundColor: '#3366CC',
-          }, headerTintColor: 'white'}}/>
-          <Stack.Screen name="TaxiPlati" component={TaxiPlati} options={{title: 'Plati Taxi', headerStyle: {
+          }, headerTintColor: 'white'
+        }} />
+        <Stack.Screen name="Revizor" component={Revizor} options={{
+          headerLeft: null, title: 'Revizor', headerStyle: {
             backgroundColor: '#3366CC',
-          }, headerTintColor: 'white'}}/>
-          <Stack.Screen name="Revizor" component={Revizor} options={{headerLeft: null, title: 'Revizor', headerStyle: {
+          }, headerTintColor: 'white'
+        }} />
+        <Stack.Screen name="StaniceRelacije" component={StaniceRelacije} options={{
+          headerLeft: null, title: 'Stanice', headerStyle: {
             backgroundColor: '#3366CC',
-          }, headerTintColor: 'white'}}/>
-          <Stack.Screen name="StaniceRelacije" component={StaniceRelacije} options={{headerLeft: null, title: 'Stanice', headerStyle: {
-            backgroundColor: '#3366CC',
-          }, headerTintColor: 'white'}}/>
-       </Stack.Navigator>
-      </NavigationContainer>
+          }, headerTintColor: 'white'
+        }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   )
 }

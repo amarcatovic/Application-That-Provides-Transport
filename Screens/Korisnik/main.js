@@ -1,16 +1,26 @@
-import React, { Component } from 'react'
-import { Alert, Text, Button, TextInput, View, StyleSheet, TouchableOpacity, Picker, FlatList, Image } from 'react-native'
-import getIP from '../../config'
+import React, { Component } from "react";
+import {
+  Alert,
+  Text,
+  Button,
+  TextInput,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Picker,
+  FlatList,
+  Image,
+} from "react-native";
+import getIP from "../../config";
 
-import { Dialog } from 'react-native-simple-dialogs'
+import { Dialog } from "react-native-simple-dialogs";
 
 export default class main extends Component {
   constructor(props) {
-    super(props)
-    
+    super(props);
 
     this.state = {
-      data: this.props.route.params.data,  
+      data: this.props.route.params.data,
       loadingTip: true,
       loadingLinije: true,
       loadingGrad: true,
@@ -25,225 +35,330 @@ export default class main extends Component {
       loadingTaxi: true,
       aktivniZahtjeviCount: 0,
       dialogVisible: true,
-    }
+    };
   }
 
-  componentDidMount(){
-    this.ucitajGradove()
-    this.ucitajTipove()
-    this.ucitajAktivneLinije()
-    this.ucitajTaxiZahtjeve()
-    setInterval(() => {this.setState({reloadLinije: true})}, 2000)
+  componentDidMount() {
+    this.ucitajGradove();
+    this.ucitajTipove();
+    this.ucitajAktivneLinije();
+    this.ucitajTaxiZahtjeve();
+    setInterval(() => {
+      this.setState({ reloadLinije: true });
+    }, 2000);
   }
 
   ucitajGradove = async () => {
     await fetch(`http://${getIP()}/publictransportcloud/api/Grad/read.php`)
-    .then(response => response.json())
-    .then(data => {  
-        this.setState({gradovi: data.data})
-        this.setState({loadingGrad: false})
-      }) 
-  }
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({ gradovi: data.data });
+        this.setState({ loadingGrad: false });
+      });
+  };
 
   ucitajTipove = async () => {
     await fetch(`http://${getIP()}/publictransportcloud/api/TipVozila/read.php`)
-    .then(response => response.json())
-    .then(data => {  
-        this.setState({tipovi: data.data})
-        this.setState({loadingTip: false})
-      }) 
-  }
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({ tipovi: data.data });
+        this.setState({ loadingTip: false });
+      });
+  };
 
   ucitajAktivneLinije = async () => {
-    await fetch(`http://${getIP()}/publictransportcloud/api/Linija/read.php?g=${this.state.selectedGrad}&t=${this.state.selectedTip}`)
-    .then(response => response.json())
-    .then(data => {  
-        this.setState({aktivneLinije: data.data})
-        this.setState({loadingLinije: false})
-        this.setState({reloadLinije: false})
-      }) 
-  }
+    await fetch(
+      `http://${getIP()}/publictransportcloud/api/Linija/read.php?g=${
+        this.state.selectedGrad
+      }&t=${this.state.selectedTip}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({ aktivneLinije: data.data });
+        this.setState({ loadingLinije: false });
+        this.setState({ reloadLinije: false });
+      });
+  };
 
   ucitajTaxiZahtjeve = async () => {
-    await fetch(`http://${getIP()}/publictransportcloud/api/TaxiZahtjev/read.php?id=${this.state.data.id}`)
-    .then(response => response.json())
-    .then(data => {  
-        if(data.message)
-        {
-          this.setState({taxiZahtjevi: []})
-        }
-        else
-        {
-          let brojac = 0
-          data.data.map(zahtjev => {
-            if(zahtjev.status === "Prihvaćen")
-              brojac++
-          })
+    await fetch(
+      `http://${getIP()}/publictransportcloud/api/TaxiZahtjev/read.php?id=${
+        this.state.data.id
+      }`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          this.setState({ taxiZahtjevi: [] });
+        } else {
+          let brojac = 0;
+          data.data.map((zahtjev) => {
+            if (zahtjev.status === "Prihvaćen") brojac++;
+          });
 
-          this.setState({taxiZahtjevi: data.data, aktivniZahtjeviCount: brojac})
+          this.setState({
+            taxiZahtjevi: data.data,
+            aktivniZahtjeviCount: brojac,
+          });
         }
-          this.setState({loadingTaxi: false})
-      }) 
-  }
-  
+        this.setState({ loadingTaxi: false });
+      });
+  };
+
   render() {
-    if(this.state.reloadLinije)
-    {
-      this.ucitajAktivneLinije()
-      this.ucitajTaxiZahtjeve()
+    if (this.state.reloadLinije) {
+      this.ucitajAktivneLinije();
+      this.ucitajTaxiZahtjeve();
     }
-    if(this.state.loadingGrad || this.state.loadingTip || this.state.loadingLinije){
-      this.ucitajAktivneLinije()
+    if (
+      this.state.loadingGrad ||
+      this.state.loadingTip ||
+      this.state.loadingLinije
+    ) {
+      this.ucitajAktivneLinije();
       return (
-        <View style={styles.container} >
+        <View style={styles.container}>
           <Text>Loading...</Text>
         </View>
-      )
-    }
-    else if(this.state.mainWindow)
-    {
+      );
+    } else if (this.state.mainWindow) {
       return (
-        <View style={styles.container} >
-          <Dialog 
-              visible={this.state.dialogVisible} 
-              title="COVID-19 Upozorenje"
-              onTouchOutside={() => this.setState({dialogVisible: false})} >
-              <View style={styles.covidContainer}>
-                <Image style={styles.tinyLogo} source={require('../../imgs/mask.png')} />
-                <View style={{marginTop: 20}}>
-                  <Text>Dragi korisnici,</Text>
-                  <Text>Za Vašu i našu sigurnost, molimo Vas da za vrijeme korištenja javnog prevoza koristite zaštitne maske i da održavate propisanu distancu</Text>
-                  <Text></Text>
-                  <Text>Hvala Vam na razumijevanju,</Text>
-                  <Text>Vaš ATPT Tim</Text>
-                </View>
+        <View style={styles.container}>
+          <Dialog
+            visible={this.state.dialogVisible}
+            title="COVID-19 Upozorenje"
+            onTouchOutside={() => this.setState({ dialogVisible: false })}
+          >
+            <View style={styles.covidContainer}>
+              <Image
+                style={styles.tinyLogo}
+                source={require("../../imgs/mask.png")}
+              />
+              <View style={{ marginTop: 20 }}>
+                <Text>Dragi korisnici,</Text>
+                <Text>
+                  Za Vašu i našu sigurnost, molimo Vas da za vrijeme korištenja
+                  javnog prevoza koristite zaštitne maske i da održavate
+                  propisanu distancu
+                </Text>
+                <Text></Text>
+                <Text>Hvala Vam na razumijevanju,</Text>
+                <Text>Vaš ATPT Tim</Text>
               </View>
+            </View>
           </Dialog>
 
           <View style={styles.optionIcons}>
-            <TouchableOpacity 
-              onPress={() => this.props.navigation.navigate('KorisnikTaxi', {data: this.state.data, taxi: this.state.taxiZahtjevi})}>
-              {this.state.aktivniZahtjeviCount > 0 ? <Image style={styles.tinyLogo} source={require('../../imgs/Taxi-Zahtjev.png')} /> : <Image style={styles.tinyLogo} source={require('../../imgs/Taxi.png')} />}
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate("KorisnikTaxi", {
+                  data: this.state.data,
+                  taxi: this.state.taxiZahtjevi,
+                })
+              }
+            >
+              {this.state.aktivniZahtjeviCount > 0 ? (
+                <Image
+                  style={styles.tinyLogo}
+                  source={require("../../imgs/Taxi-Zahtjev.png")}
+                />
+              ) : (
+                <Image
+                  style={styles.tinyLogo}
+                  source={require("../../imgs/Taxi.png")}
+                />
+              )}
             </TouchableOpacity>
-            <TouchableOpacity 
-              onPress={() => this.props.navigation.navigate('PayByAppKorisnik', {data: this.state.data})}>
-              <Image style={styles.tinyLogo} source={require('../../imgs/QR.png')} />
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate("PayByAppKorisnik", {
+                  data: this.state.data,
+                })
+              }
+            >
+              <Image
+                style={styles.tinyLogo}
+                source={require("../../imgs/QR.png")}
+              />
             </TouchableOpacity>
-            <TouchableOpacity 
-              onPress={() => this.props.navigation.navigate('KorisnikProfil', {data: this.state.data})}>
-              <Image style={styles.tinyLogo} source={require('../../imgs/Profil.png')} />
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate("KorisnikProfil", {
+                  data: this.state.data,
+                })
+              }
+            >
+              <Image
+                style={styles.tinyLogo}
+                source={require("../../imgs/Profil.png")}
+              />
             </TouchableOpacity>
           </View>
-        <Picker
-          style={{ height: 50, width: '80%' }}
-          mode="dropdown"
-          selectedValue={this.state.selectedGrad}
-          onValueChange={(itemValue, itemIndex) => {
-            this.setState({selectedGrad: itemValue, loadingLinije: true})
-            }}>
-          {this.state.gradovi.map(grad => <Picker.Item label={grad.naziv} value={grad.id}/>)}
-        </Picker>
-        <Picker
-          style={{ height: 50, width: '80%' }}
-          mode="dropdown"
-          selectedValue={this.state.selectedTip}
-          onValueChange={(itemValue, itemIndex) => {
-            this.setState({selectedTip: itemValue, loadingLinije: true})
-            }}>
-          {this.state.tipovi.map(tip => <Picker.Item label={tip.naziv} value={tip.id}/>)}
+          <Picker
+            style={{ height: 50, width: "80%" }}
+            mode="dropdown"
+            selectedValue={this.state.selectedGrad}
+            onValueChange={(itemValue, itemIndex) => {
+              this.setState({ selectedGrad: itemValue, loadingLinije: true });
+            }}
+          >
+            {this.state.gradovi.map((grad) => (
+              <Picker.Item label={grad.naziv} value={grad.id} />
+            ))}
+          </Picker>
+          <Picker
+            style={{ height: 50, width: "80%" }}
+            mode="dropdown"
+            selectedValue={this.state.selectedTip}
+            onValueChange={(itemValue, itemIndex) => {
+              this.setState({ selectedTip: itemValue, loadingLinije: true });
+            }}
+          >
+            {this.state.tipovi.map((tip) => (
+              <Picker.Item label={tip.naziv} value={tip.id} />
+            ))}
           </Picker>
           <FlatList
             data={this.state.aktivneLinije}
-            renderItem={({item}) => (
-                <TouchableOpacity
-                    style={styles.relacija}
-                    onPress={() => this.props.navigation.navigate('StaniceRelacije', {relacija_id: item.relacija_id})}>
-                      {item.tip == "Autobus" ? <Image style={styles.tinyLogo} source={require('../../imgs/bus.png')} /> : undefined }
-                      {item.tip == "Trolejbus" ? <Image style={styles.tinyLogo} source={require('../../imgs/bus.png')} /> : undefined }
-                      {item.tip == "Tramvaj" ? <Image style={styles.tinyLogo} source={require('../../imgs/Tramvaj.png')} /> : undefined }
-                      {item.tip == "Voz" ? <Image style={styles.tinyLogo} source={require('../../imgs/Voz.png')} /> : undefined }
-                      {item.tip == "Metro" ? <Image style={styles.tinyLogo} source={require('../../imgs/Metro.png')} /> : undefined }
-                      {item.tip == "Žičara" ? <Image style={styles.tinyLogo} source={require('../../imgs/Zicara.png')} /> : undefined }
-                    <View style={styles.textoviRelacija}>
-                        <Text style={[styles.textRelacija, {fontWeight: 'bold', fontSize: 20}]}>{item.polaziste} - {item.odrediste}</Text>
-                        <Text style={styles.textRelacija}>Sljedeća stanica: {item.sljedecaStanica}</Text>
-                        <Text style={styles.textRelacija}>Cijena karte: {item.cijena}</Text>
-                    </View>
-                </TouchableOpacity> 
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.relacija}
+                onPress={() =>
+                  this.props.navigation.navigate("StaniceRelacije", {
+                    relacija_id: item.relacija_id,
+                  })
+                }
+              >
+                {item.tip == "Autobus" ? (
+                  <Image
+                    style={styles.tinyLogo}
+                    source={require("../../imgs/bus.png")}
+                  />
+                ) : undefined}
+                {item.tip == "Trolejbus" ? (
+                  <Image
+                    style={styles.tinyLogo}
+                    source={require("../../imgs/bus.png")}
+                  />
+                ) : undefined}
+                {item.tip == "Tramvaj" ? (
+                  <Image
+                    style={styles.tinyLogo}
+                    source={require("../../imgs/Tramvaj.png")}
+                  />
+                ) : undefined}
+                {item.tip == "Voz" ? (
+                  <Image
+                    style={styles.tinyLogo}
+                    source={require("../../imgs/Voz.png")}
+                  />
+                ) : undefined}
+                {item.tip == "Metro" ? (
+                  <Image
+                    style={styles.tinyLogo}
+                    source={require("../../imgs/Metro.png")}
+                  />
+                ) : undefined}
+                {item.tip == "Žičara" ? (
+                  <Image
+                    style={styles.tinyLogo}
+                    source={require("../../imgs/Zicara.png")}
+                  />
+                ) : undefined}
+                <View style={styles.textoviRelacija}>
+                  <Text
+                    style={[
+                      styles.textRelacija,
+                      { fontWeight: "bold", fontSize: 20 },
+                    ]}
+                  >
+                    {item.polaziste} - {item.odrediste}
+                  </Text>
+                  <Text style={styles.textRelacija}>
+                    Sljedeća stanica: {item.sljedecaStanica}
+                  </Text>
+                  <Text style={styles.textRelacija}>
+                    Cijena karte: {item.cijena}
+                  </Text>
+                </View>
+              </TouchableOpacity>
             )}
-            keyExtractor={item => item.id}
+            keyExtractor={(item) => item.id}
             extraData={this.state}
           />
         </View>
-      )
-    }    
+      );
+    }
   }
 }
 
 const styles = StyleSheet.create({
   covidContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#ecf0f1",
   },
   input: {
     width: 200,
     height: 44,
     padding: 10,
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: "black",
     marginBottom: 10,
     marginTop: 10,
   },
   btn: {
-      margin: 20,
+    margin: 20,
   },
   relacija: {
-      width: '90%',
-      backgroundColor: '#edebeb',
-      padding: 20,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-around',
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 7,
-      },
-      shadowOpacity: 0.52,
-      shadowRadius: 7.22,
-      elevation: 1,
-      borderRadius: 30,
-      marginBottom: 20,
+    width: "90%",
+    backgroundColor: "#edebeb",
+    padding: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 7,
+    },
+    shadowOpacity: 0.52,
+    shadowRadius: 7.22,
+    elevation: 1,
+    borderRadius: 30,
+    marginBottom: 20,
   },
   textRelacija: {
     fontSize: 10,
     marginTop: 5,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  textoviRelacija: {
+    width: "70%",
   },
   textRelacijaOdabrana: {
     fontSize: 10,
     marginTop: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: 'green'
+    justifyContent: "center",
+    alignItems: "center",
+    color: "green",
   },
   tinyLogo: {
     width: 60,
     height: 60,
-    resizeMode: 'stretch',
+    resizeMode: "stretch",
   },
   optionIcons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 20,
-    width: '100%'
-  }
-})
+    width: "100%",
+  },
+});
