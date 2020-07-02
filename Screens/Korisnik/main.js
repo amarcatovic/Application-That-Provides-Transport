@@ -69,7 +69,7 @@ export default class main extends Component {
   ucitajAktivneLinije = async () => {
     await fetch(
       `http://${getIP()}/publictransportcloud/api/Linija/read.php?g=${
-        this.state.selectedGrad
+      this.state.selectedGrad
       }&t=${this.state.selectedTip}`
     )
       .then((response) => response.json())
@@ -83,7 +83,7 @@ export default class main extends Component {
   ucitajTaxiZahtjeve = async () => {
     await fetch(
       `http://${getIP()}/publictransportcloud/api/TaxiZahtjev/read.php?id=${
-        this.state.data.id
+      this.state.data.id
       }`
     )
       .then((response) => response.json())
@@ -163,11 +163,11 @@ export default class main extends Component {
                   source={require("../../imgs/Taxi-Zahtjev.png")}
                 />
               ) : (
-                <Image
-                  style={styles.tinyLogo}
-                  source={require("../../imgs/Taxi.png")}
-                />
-              )}
+                  <Image
+                    style={styles.tinyLogo}
+                    source={require("../../imgs/Taxi.png")}
+                  />
+                )}
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() =>
